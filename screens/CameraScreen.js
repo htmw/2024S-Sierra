@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Camera } from "expo-camera";
+import { useNavigation } from "@react-navigation/native";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -19,6 +20,7 @@ const CameraScreen = () => {
   const [cameraRef, setCameraRef] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -35,9 +37,15 @@ const CameraScreen = () => {
     }
   };
 
+  const handleConfirmImage = () => {
+    setModalVisible(false);
+    navigation.navigate("ImageDetails", { imageUri: capturedImage });
+  };
+
   if (hasPermission === null) {
     return <View />;
   }
+
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
@@ -63,11 +71,16 @@ const CameraScreen = () => {
         <View style={styles.modalView}>
           <Image source={{ uri: capturedImage }} style={styles.capturedImage} />
           <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={handleConfirmImage}
+          >
+            <Text style={styles.textStyle}>Confirm</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             style={styles.closeButton}
             onPress={() => setModalVisible(!modalVisible)}
           >
             <Text style={styles.textStyle}>X</Text>
-            {/* Ensure "X" is within a <Text> component */}
           </TouchableOpacity>
         </View>
       </Modal>
@@ -108,15 +121,23 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "80%",
     marginBottom: 20,
-    borderWidth: 4, // Added border width
-    borderColor: "#fff", // Added border color
-    borderRadius: 10, // Optional rounded corners
+    borderWidth: 4,
+    borderColor: "#fff",
+    borderRadius: 10,
   },
   closeButton: {
     backgroundColor: "#000",
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    marginTop: 10,
+  },
+  confirmButton: {
+    backgroundColor: "#7F5DF0",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginBottom: 10,
   },
   textStyle: {
     color: "white",

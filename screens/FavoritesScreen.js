@@ -1,83 +1,60 @@
-import React from "react";
-import { View, Text, SafeAreaView, StyleSheet, FlatList } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
-
-const favoritesData = [
-  {
-    id: "1",
-    name: "Apple",
-    calories: 95,
-    protein: 0.5,
-    carbs: 25,
-    fat: 0.3,
-    icon: "apple-alt",
-  },
-  {
-    id: "3",
-    name: "Carrot",
-    calories: 41,
-    protein: 0.9,
-    carbs: 9,
-    fat: 0.2,
-    icon: "carrot",
-  },
-  {
-    id: "4",
-    name: "Spinach",
-    calories: 23,
-    protein: 2.9,
-    carbs: 3.6,
-    fat: 0.4,
-    icon: "leaf",
-  },
-];
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { API_URL } from "@env";
 
 export default function FavoritesScreen() {
+  const [favoritesData, setFavoritesData] = useState([]);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    fetchFavoritesData();
+  }, []);
+
+  const fetchFavoritesData = async () => {
+    try {
+      const response = await fetch(`${API_URL}/favorites`);
+      const data = await response.json();
+      setFavoritesData(data);
+    } catch (error) {
+      console.error("Error fetching favorites data:", error);
+    }
+  };
+
   const renderFavoriteItem = ({ item }) => (
-    <View style={styles.itemContainer}>
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => navigation.navigate("FavoriteDetails", { item })}
+    >
       <View style={styles.itemDetails}>
-        <Icon name={item.icon} size={30} color="#888" style={styles.itemIcon} />
         <Text style={styles.itemName}>{item.name}</Text>
-      </View>
-      <View style={styles.itemNutrition}>
-        <View style={styles.nutritionItem}>
-          <Icon
-            name="fire"
-            size={14}
-            color="#888"
-            style={styles.nutritionIcon}
-          />
-          <Text style={styles.itemNutritionText}>{item.calories}</Text>
-        </View>
-        <View style={styles.nutritionItem}>
-          <Icon
-            name="dna"
-            size={14}
-            color="#888"
-            style={styles.nutritionIcon}
-          />
-          <Text style={styles.itemNutritionText}>{item.protein}g</Text>
-        </View>
-        <View style={styles.nutritionItem}>
-          <Icon
-            name="bread-slice"
-            size={14}
-            color="#888"
-            style={styles.nutritionIcon}
-          />
-          <Text style={styles.itemNutritionText}>{item.carbs}g</Text>
-        </View>
-        <View style={styles.nutritionItem}>
-          <Icon
-            name="tint"
-            size={14}
-            color="#888"
-            style={styles.nutritionIcon}
-          />
-          <Text style={styles.itemNutritionText}>{item.fat}g</Text>
+        <View style={styles.itemNutrition}>
+          <View style={styles.nutritionItem}>
+            <Text style={styles.itemNutritionLabel}>Calories:</Text>
+            <Text style={styles.itemNutritionText}>{item.calories}</Text>
+          </View>
+          <View style={styles.nutritionItem}>
+            <Text style={styles.itemNutritionLabel}>Protein:</Text>
+            <Text style={styles.itemNutritionText}>{item.protein}g</Text>
+          </View>
+          <View style={styles.nutritionItem}>
+            <Text style={styles.itemNutritionLabel}>Carbs:</Text>
+            <Text style={styles.itemNutritionText}>{item.carbs}g</Text>
+          </View>
+          <View style={styles.nutritionItem}>
+            <Text style={styles.itemNutritionLabel}>Fat:</Text>
+            <Text style={styles.itemNutritionText}>{item.fat}g</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -88,7 +65,7 @@ export default function FavoritesScreen() {
       <FlatList
         data={favoritesData}
         renderItem={renderFavoriteItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.content}
       />
     </SafeAreaView>
@@ -114,31 +91,29 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     marginBottom: 30,
   },
   itemDetails: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  itemIcon: {
-    marginRight: 10,
+    alignItems: "flex-start",
   },
   itemName: {
     fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 10,
   },
   itemNutrition: {
     flexDirection: "row",
+    flexWrap: "wrap",
   },
   nutritionItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginLeft: 10,
+    marginRight: 20,
+    marginBottom: 5,
   },
-  nutritionIcon: {
+  itemNutritionLabel: {
+    fontSize: 14,
+    color: "#888",
     marginRight: 5,
   },
   itemNutritionText: {
