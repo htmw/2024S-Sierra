@@ -64,3 +64,8 @@ data/
     ├── class2/
     └── ...
 ```
+
+## To Do
+
+- [ ] Adding Training Train and Validation Graphs in Readme
+- [ ] Adding Model Architecture in Readme
