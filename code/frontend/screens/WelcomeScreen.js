@@ -1,9 +1,10 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function WelcomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={["#DAD299", "#B0DAB9"]} style={styles.container}>
       <Text style={styles.title}>FreshLens</Text>
       <Text style={styles.subtitle}>Know Your Healthy Diet</Text>
       <View style={styles.buttonContainer}>
@@ -20,7 +21,7 @@ export default function WelcomeScreen({ navigation }) {
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
