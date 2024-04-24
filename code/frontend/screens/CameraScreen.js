@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -54,10 +55,11 @@ const CameraScreen = () => {
     <SafeAreaView style={styles.container}>
       <Camera style={styles.camera} ref={(ref) => setCameraRef(ref)}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.captureButton}
-            onPress={takePicture}
-          />
+          <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+            <View style={styles.captureButtonInner}>
+              <Ionicons name="camera" size={40} color="#fff" />
+            </View>
+          </TouchableOpacity>
         </View>
       </Camera>
       <Modal
@@ -103,13 +105,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   captureButton: {
-    width: 70,
-    height: 70,
-    borderRadius: 50,
-    backgroundColor: "transparent",
-    borderWidth: 6,
-    borderColor: "#fff",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 30,
+    borderWidth: 6,
+    borderColor: "#000",
+  },
+  captureButtonInner: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#fffc00",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalView: {
     flex: 1,
