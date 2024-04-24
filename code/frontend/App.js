@@ -1,20 +1,35 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
+
 import FavoritesStackNavigator from "./navigators/FavoritesStackNavigator";
 import CameraStackNavigator from "./navigators/CameraStackNavigator";
 import ProfileScreen from "./screens/ProfileScreen";
-import AuthScreen from "./screens/AuthScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
+import SignUpScreen from "./screens/SignUpScreen";
+import SignInScreen from "./screens/SignInScreen";
 
 const Tab = createBottomTabNavigator();
+const AuthStack = createStackNavigator();
+
+function AuthStackNavigator() {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="Welcome" component={WelcomeScreen} />
+      <AuthStack.Screen name="SignUp" component={SignUpScreen} />
+      <AuthStack.Screen name="SignIn" component={SignInScreen} />
+    </AuthStack.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Auth"
+        initialRouteName="AuthStack"
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
@@ -37,7 +52,7 @@ export default function App() {
           },
         })}
       >
-        <Tab.Screen name="Auth" component={AuthScreen} />
+        <Tab.Screen name="AuthStack" component={AuthStackNavigator} />
         <Tab.Screen name="FavoritesStack" component={FavoritesStackNavigator} />
         <Tab.Screen name="CameraStack" component={CameraStackNavigator} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
