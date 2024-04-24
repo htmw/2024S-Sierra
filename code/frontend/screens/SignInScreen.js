@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import firebase from "../service/firebase";
 
-export default function SignInScreen() {
+export default function SignInScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,6 +16,7 @@ export default function SignInScreen() {
     try {
       await firebase.auth().signInWithEmailAndPassword(username, password);
       console.log("User signed in!");
+      navigation.navigate("CameraStack");
     } catch (error) {
       console.error(error);
     }
