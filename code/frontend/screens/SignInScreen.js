@@ -6,13 +6,19 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import firebase from "../service/firebase";
 
 export default function SignInScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignIn = () => {
-    console.log("Sign in button pressed");
+  const handleSignIn = async () => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(username, password);
+      console.log("User signed in!");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
