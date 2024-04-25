@@ -29,7 +29,8 @@ export default function SignInScreen({ navigation }) {
 
   const handleSignIn = async () => {
     try {
-      await firebase.auth().signInWithEmailAndPassword(username, password);
+      const fullUsername = `${username}@freshlens.com`;
+      await firebase.auth().signInWithEmailAndPassword(fullUsername, password);
       console.log("User signed in!");
       navigation.navigate("CameraStack");
     } catch (error) {
