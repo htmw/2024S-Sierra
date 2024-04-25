@@ -62,6 +62,9 @@ export default function SignInScreen({ navigation }) {
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+        <Text style={styles.signUpText}>Not registered? Sign Up</Text>
+      </TouchableOpacity>
     </LinearGradient>
   );
 }
@@ -106,5 +109,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     fontFamily: "Montserrat_600SemiBold",
+  },
+  signUpText: {
+    color: "#FFFFFF",
+    fontFamily: "Montserrat_500Medium",
+    marginTop: 20,
+    textDecorationLine: "underline",
   },
 });

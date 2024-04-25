@@ -14,7 +14,7 @@ import {
 } from "@expo-google-fonts/montserrat";
 import firebase from "../service/firebase";
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ navigation }) {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [age, setAge] = useState("");
@@ -30,6 +30,7 @@ export default function SignUpScreen() {
     try {
       await firebase.auth().createUserWithEmailAndPassword(username, password);
       console.log("User account created & signed in!");
+      navigation.navigate("CameraStack");
     } catch (error) {
       console.error(error);
     }
@@ -87,6 +88,9 @@ export default function SignUpScreen() {
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+        <Text style={styles.signInText}>Already have an account? Sign In</Text>
+      </TouchableOpacity>
     </LinearGradient>
   );
 }
@@ -131,5 +135,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     fontFamily: "Montserrat_600SemiBold",
+  },
+  signInText: {
+    color: "#FFFFFF",
+    fontFamily: "Montserrat_500Medium",
+    marginTop: 20,
+    textDecorationLine: "underline",
   },
 });
