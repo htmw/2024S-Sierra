@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/montserrat": "^0.2.3",
     "@expo/vector-icons": "^14.0.0",
     "@gorhom/bottom-sheet": "^4.6.1",
     "@react-navigation/bottom-tabs": "^6.5.19",
@@ -24,7 +25,8 @@
     "react-native-dotenv": "^3.4.11",
     "react-native-reanimated": "~3.6.2",
     "react-native-safe-area-context": "^4.9.0",
-    "react-native-screens": "^3.29.0"
+    "react-native-screens": "^3.29.0",
+    "expo-font": "~11.10.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -1,24 +1,42 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import {
+  useFonts,
+  Montserrat_700Bold,
+  Montserrat_600SemiBold,
+} from "@expo-google-fonts/montserrat";
 
 export default function WelcomeScreen({ navigation }) {
+  const [fontsLoaded] = useFonts({
+    Montserrat_700Bold,
+    Montserrat_600SemiBold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <LinearGradient colors={["#DAD299", "#B0DAB9"]} style={styles.container}>
-      <Text style={styles.title}>FreshLens</Text>
-      <Text style={styles.subtitle}>Know Your Healthy Diet</Text>
+    <LinearGradient colors={["#1D976C", "#93F9B9"]} style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>FreshLens</Text>
+        <Text style={styles.subtitle}>Know Your Healthy Diet</Text>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, styles.signUpButton]}
           onPress={() => navigation.navigate("SignUp")}
         >
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, styles.signInButton]}
           onPress={() => navigation.navigate("SignIn")}
         >
-          <Text style={styles.buttonText}>Sign In</Text>
+          <Text style={[styles.buttonText, styles.signInButtonText]}>
+            Sign In
+          </Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -33,31 +51,50 @@ const styles = StyleSheet.create({
     paddingVertical: 100,
     paddingHorizontal: 20,
   },
+  titleContainer: {
+    alignItems: "center",
+  },
   title: {
-    fontSize: 32,
+    fontSize: 48,
     fontWeight: "bold",
-    color: "#7F5DF0",
+    color: "#FFFFFF",
+    fontFamily: "Montserrat_700Bold",
+    textAlign: "center",
+    marginBottom: 10,
   },
   subtitle: {
     fontSize: 24,
-    fontWeight: "bold",
-    marginTop: 10,
+    color: "#FFFFFF",
+    fontFamily: "Montserrat_600SemiBold",
+    textAlign: "center",
   },
   buttonContainer: {
     width: "100%",
     alignItems: "center",
   },
   button: {
-    backgroundColor: "#7F5DF0",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginBottom: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 30,
+    marginBottom: 15,
     width: "100%",
     alignItems: "center",
   },
+  signUpButton: {
+    backgroundColor: "#FFFFFF",
+  },
+  signInButton: {
+    backgroundColor: "transparent",
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+  },
   buttonText: {
-    color: "white",
+    color: "#1D976C",
     fontWeight: "bold",
+    fontSize: 18,
+    fontFamily: "Montserrat_700Bold",
+  },
+  signInButtonText: {
+    color: "#FFFFFF",
   },
 });
