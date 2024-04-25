@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { API_URL } from "@env";
 
 const ImageDetailsScreen = ({ route }) => {
   const { imageUri } = route.params;
@@ -30,7 +29,7 @@ const ImageDetailsScreen = ({ route }) => {
         name: "image.jpg",
       });
 
-      const response = await fetch(`${API_URL}/predict`, {
+      const response = await fetch("http://localhost:3000/predict", {
         method: "POST",
         body: formData,
         headers: {
