@@ -32,7 +32,7 @@ export default function SignInScreen({ navigation }) {
       const fullUsername = `${username}@freshlens.com`;
       await firebase.auth().signInWithEmailAndPassword(fullUsername, password);
       console.log("User signed in!");
-      navigation.navigate("CameraStack");
+      navigation.navigate("MainTab", { screen: "CameraStack" });
     } catch (error) {
       console.error(error);
     }

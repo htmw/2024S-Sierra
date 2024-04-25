@@ -36,7 +36,7 @@ export default function SignUpScreen({ navigation }) {
       const fullUsername = `${username}@freshlens.com`;
       await createUserWithEmailAndPassword(auth, fullUsername, password);
       console.log("User account created & signed in!");
-      navigation.navigate("CameraStack");
+      navigation.navigate("MainTab", { screen: "CameraStack" });
     } catch (error) {
       console.error(error);
     }
