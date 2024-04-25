@@ -33,7 +33,8 @@ export default function SignUpScreen({ navigation }) {
 
   const handleSignUp = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, username, password);
+      const fullUsername = `${username}@freshlens.com`;
+      await createUserWithEmailAndPassword(auth, fullUsername, password);
       console.log("User account created & signed in!");
       navigation.navigate("CameraStack");
     } catch (error) {
