@@ -16,7 +16,7 @@ import {
   Montserrat_500Medium,
   Montserrat_600SemiBold,
 } from "@expo-google-fonts/montserrat";
-import firebase from "../service/firebase";
+import firebase from "../service/firebaseConfig";
 
 export default function SignUpScreen({ navigation }) {
   const [name, setName] = useState("");
