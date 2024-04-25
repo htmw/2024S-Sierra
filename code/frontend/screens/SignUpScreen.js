@@ -16,7 +16,8 @@ import {
   Montserrat_500Medium,
   Montserrat_600SemiBold,
 } from "@expo-google-fonts/montserrat";
-import firebase from "../service/firebaseConfig";
+import { auth } from "../service/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUpScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -32,7 +33,7 @@ export default function SignUpScreen({ navigation }) {
 
   const handleSignUp = async () => {
     try {
-      await firebase.auth().createUserWithEmailAndPassword(username, password);
+      await createUserWithEmailAndPassword(auth, username, password);
       console.log("User account created & signed in!");
       navigation.navigate("CameraStack");
     } catch (error) {
