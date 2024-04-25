@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { API_URL } from "@env";
 
 export default function FavoritesScreen() {
   const [favoritesData, setFavoritesData] = useState([]);
@@ -20,7 +19,7 @@ export default function FavoritesScreen() {
 
   const fetchFavoritesData = async () => {
     try {
-      const response = await fetch(`${API_URL}/favorites`);
+      const response = await fetch("http://localhost:3000/predict");
       const data = await response.json();
       setFavoritesData(data);
     } catch (error) {
