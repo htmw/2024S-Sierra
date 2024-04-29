@@ -16,8 +16,9 @@ import {
   Montserrat_500Medium,
   Montserrat_600SemiBold,
 } from "@expo-google-fonts/montserrat";
-import { auth } from "../service/firebaseConfig";
+import { auth, db } from "../service/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function SignUpScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -34,7 +35,21 @@ export default function SignUpScreen({ navigation }) {
   const handleSignUp = async () => {
     try {
       const fullUsername = `${username}@freshlens.com`;
-      await createUserWithEmailAndPassword(auth, fullUsername, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        fullUsername,
+        password,
+      );
+      const user = userCredential.user;
+
+      // Store user details in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name,
+        username,
+        age,
+        email: fullUsername,
+      });
+
       console.log("User account created & signed in!");
       navigation.navigate("MainTab", { screen: "CameraStack" });
     } catch (error) {
@@ -60,7 +75,7 @@ export default function SignUpScreen({ navigation }) {
               placeholder="Name"
               value={name}
               onChangeText={setName}
-              placeholderTextColor={name ? "#000000" : "#FFFFFF80"} // Change placeholder color based on the value of 'name'
+              placeholderTextColor={name ? "#000000" : "#FFFFFF80"}
             />
             <TextInput
               style={styles.input}
