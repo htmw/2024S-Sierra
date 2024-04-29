@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Eat 5 Fruits a Day",
+    "description": "Challenge yourself to eat 5 different fruits every day for a week.",
+    "fruits": ["Apple", "Banana", "Orange", "Strawberry", "Kiwi"]
+  },
+  {
+    "id": 2,
+    "title": "Try a New Fruit",
+    "description": "Discover a new fruit you haven't tried before and incorporate it into your diet.",
+    "fruits": ["Dragon Fruit", "Guava", "Papaya", "Mango", "Pineapple"]
+  },
+  {
+    "id": 3,
+    "title": "Fruit Smoothie Challenge",
+    "description": "Make a delicious and nutritious fruit smoothie every day for a week.",
+    "fruits": ["Blueberry", "Raspberry", "Spinach", "Avocado", "Coconut Water"]
+  },
+  {
+    "id": 4,
+    "title": "Fruit Salad Challenge",
+    "description": "Prepare a colorful and refreshing fruit salad for lunch or as a side dish for dinner.",
+    "fruits": ["Watermelon", "Cantaloupe", "Grapes", "Peach", "Mint Leaves"]
+  },
+  {
+    "id": 5,
+    "title": "Fruit Infused Water Challenge",
+    "description": "Stay hydrated by drinking fruit-infused water throughout the day.",
+    "fruits": ["Lemon", "Lime", "Cucumber", "Ginger", "Basil Leaves"]
+  }
+]
