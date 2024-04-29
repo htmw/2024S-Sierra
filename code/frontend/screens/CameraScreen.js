@@ -53,15 +53,18 @@ const CameraScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Camera style={styles.camera} ref={(ref) => setCameraRef(ref)}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-            <View style={styles.captureButtonInner}>
-              <Ionicons name="camera" size={40} color="#fff" />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </Camera>
+      <View style={styles.cameraContainer}>
+        <Camera style={styles.camera} ref={(ref) => setCameraRef(ref)}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Camera</Text>
+          </View>
+        </Camera>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+          <View style={styles.captureButtonInner} />
+        </TouchableOpacity>
+      </View>
       <Modal
         animationType="slide"
         transparent={true}
@@ -72,18 +75,20 @@ const CameraScreen = () => {
       >
         <View style={styles.modalView}>
           <Image source={{ uri: capturedImage }} style={styles.capturedImage} />
-          <TouchableOpacity
-            style={styles.confirmButton}
-            onPress={handleConfirmImage}
-          >
-            <Text style={styles.textStyle}>Confirm</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setModalVisible(!modalVisible)}
-          >
-            <Text style={styles.textStyle}>X</Text>
-          </TouchableOpacity>
+          <View style={styles.modalButtonContainer}>
+            <TouchableOpacity
+              style={[styles.modalButton, styles.confirmButton]}
+              onPress={handleConfirmImage}
+            >
+              <Text style={styles.modalButtonText}>Send</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.modalButton, styles.closeButton]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Ionicons name="close" size={32} color="#fff" />
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </SafeAreaView>
@@ -93,15 +98,39 @@ const CameraScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#000",
+  },
+  cameraContainer: {
+    flex: 1,
+    borderRadius: 30,
+    overflow: "hidden",
+    marginTop: 50,
+    marginBottom: 100,
+    marginHorizontal: 20,
   },
   camera: {
     flex: 1,
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 20,
+    paddingBottom: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+    textTransform: "uppercase",
+    letterSpacing: 2,
+  },
   buttonContainer: {
-    flex: 1,
-    backgroundColor: "transparent",
-    justifyContent: "flex-end",
+    position: "absolute",
+    bottom: 30,
+    left: 0,
+    right: 0,
     alignItems: "center",
   },
   captureButton: {
@@ -111,7 +140,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 30,
     borderWidth: 6,
     borderColor: "#000",
   },
@@ -120,41 +148,42 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32,
     backgroundColor: "#fffc00",
-    justifyContent: "center",
-    alignItems: "center",
   },
   modalView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
   capturedImage: {
     width: "100%",
     height: "80%",
-    marginBottom: 20,
-    borderWidth: 4,
-    borderColor: "#fff",
-    borderRadius: 10,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
-  closeButton: {
+  modalButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     backgroundColor: "#000",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    marginTop: 10,
+  },
+  modalButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   confirmButton: {
     backgroundColor: "#7F5DF0",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    marginBottom: 10,
+    borderRadius: 30,
   },
-  textStyle: {
-    color: "white",
+  closeButton: {
+    backgroundColor: "transparent",
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontSize: 18,
     fontWeight: "bold",
-    textAlign: "center",
+    textTransform: "uppercase",
   },
 });
 
