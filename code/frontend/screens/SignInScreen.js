@@ -9,6 +9,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -16,11 +17,13 @@ import {
   Montserrat_500Medium,
   Montserrat_600SemiBold,
 } from "@expo-google-fonts/montserrat";
-import firebase from "../service/firebaseConfig";
+import { auth } from "../service/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignInScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const [fontsLoaded] = useFonts({
     Montserrat_500Medium,
     Montserrat_600SemiBold,
@@ -29,11 +32,33 @@ export default function SignInScreen({ navigation }) {
   const handleSignIn = async () => {
     try {
       const fullUsername = `${username}@freshlens.com`;
-      await firebase.auth().signInWithEmailAndPassword(fullUsername, password);
+      await signInWithEmailAndPassword(auth, fullUsername, password);
       console.log("User signed in!");
-      navigation.navigate("MainTab", { screen: "CameraStack" });
+
+      // Show success alert
+      Alert.alert(
+        "Success",
+        "You have successfully signed in!",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.navigate("MainTab", { screen: "CameraStack" });
+            },
+          },
+        ],
+        { cancelable: false },
+      );
     } catch (error) {
       console.error(error);
+
+      // Show error alert
+      Alert.alert(
+        "Error",
+        "An error occurred while signing in. Please try again.",
+        [{ text: "OK" }],
+        { cancelable: false },
+      );
     }
   };
 
