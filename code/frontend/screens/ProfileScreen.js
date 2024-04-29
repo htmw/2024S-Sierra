@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { auth, db } from "../service/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
+import challenges from "../data/challenges.json";
 
 export default function ProfileScreen() {
   const [user, setUser] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = auth.currentUser.uid;
       const userRef = doc(db, "users", userId);
       const userSnap = await getDoc(userRef);
-
       if (userSnap.exists()) {
         setUser(userSnap.data());
       }
     };
-
     fetchUserData();
   }, []);
 
@@ -31,15 +40,21 @@ export default function ProfileScreen() {
     ? { uri: profileImage }
     : require("../assets/image1.webp");
 
+  const handleChallengePress = (challenge) => {
+    navigation.navigate("ChallengeDetails", { challenge });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Profile</Text>
       </View>
-      <View style={styles.content}>
-        <Image source={profilePicture} style={styles.profilePicture} />
-        <Text style={styles.name}>{displayName}</Text>
-        <Text style={styles.age}>Age: {age}</Text>
+      <ScrollView style={styles.content}>
+        <View style={styles.profileContainer}>
+          <Image source={profilePicture} style={styles.profilePicture} />
+          <Text style={styles.name}>{displayName}</Text>
+          <Text style={styles.age}>Age: {age}</Text>
+        </View>
         <View style={styles.stats}>
           <View style={styles.statItem}>
             <Icon name="fire" size={24} color="#FF4500" />
@@ -57,7 +72,23 @@ export default function ProfileScreen() {
             <Text style={styles.statLabel}>Meals</Text>
           </View>
         </View>
-      </View>
+        <View style={styles.challengesContainer}>
+          <Text style={styles.challengesTitle}>Challenges</Text>
+          {challenges.map((challenge) => (
+            <TouchableOpacity
+              key={challenge.id}
+              style={styles.challengeItem}
+              onPress={() => handleChallengePress(challenge)}
+            >
+              <View style={styles.challengeIconContainer}>
+                <Icon name="trophy" size={20} color="#FFD700" />
+              </View>
+              <Text style={styles.challengeTitle}>{challenge.title}</Text>
+              <Icon name="chevron-right" size={20} color="#1E90FF" />
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -83,9 +114,11 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     paddingHorizontal: 20,
+  },
+  profileContainer: {
+    alignItems: "center",
+    marginVertical: 20,
   },
   profilePicture: {
     width: 150,
@@ -104,13 +137,11 @@ const styles = StyleSheet.create({
   age: {
     fontSize: 20,
     color: "#666",
-    marginBottom: 30,
   },
   stats: {
     flexDirection: "row",
     justifyContent: "space-around",
-    width: "100%",
-    marginTop: 30,
+    marginVertical: 20,
   },
   statItem: {
     alignItems: "center",
@@ -124,5 +155,37 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#888",
     marginTop: 5,
+  },
+  challengesContainer: {
+    marginVertical: 20,
+  },
+  challengesTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#1E90FF",
+  },
+  challengeItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F0F8FF",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  challengeIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#FFF8DC",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  challengeTitle: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
   },
 });

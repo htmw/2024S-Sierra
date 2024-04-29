@@ -1,9 +1,25 @@
-import React from "react";
-import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default function ChallengeDetailsScreen({ route }) {
   const { challenge } = route.params;
+  const [completedFruits, setCompletedFruits] = useState([]);
+
+  const toggleFruitCompletion = (fruit) => {
+    if (completedFruits.includes(fruit)) {
+      setCompletedFruits(completedFruits.filter((f) => f !== fruit));
+    } else {
+      setCompletedFruits([...completedFruits, fruit]);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,10 +37,27 @@ export default function ChallengeDetailsScreen({ route }) {
             Fruits
           </Text>
           {challenge.fruits.map((fruit, index) => (
-            <View key={index} style={styles.fruitItem}>
-              <Icon name="chevron-right" size={16} color="#32CD32" />
-              <Text style={styles.fruitText}>{fruit}</Text>
-            </View>
+            <TouchableOpacity
+              key={index}
+              style={styles.fruitItem}
+              onPress={() => toggleFruitCompletion(fruit)}
+            >
+              <Icon
+                name={
+                  completedFruits.includes(fruit) ? "check-square" : "square"
+                }
+                size={20}
+                color="#32CD32"
+              />
+              <Text
+                style={[
+                  styles.fruitText,
+                  completedFruits.includes(fruit) && styles.completedFruitText,
+                ]}
+              >
+                {fruit}
+              </Text>
+            </TouchableOpacity>
           ))}
         </View>
         <View style={styles.tipsContainer}>
@@ -94,12 +127,16 @@ const styles = StyleSheet.create({
   fruitItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 5,
+    marginBottom: 10,
   },
   fruitText: {
     fontSize: 18,
     color: "#333",
-    marginLeft: 5,
+    marginLeft: 10,
+  },
+  completedFruitText: {
+    textDecorationLine: "line-through",
+    color: "#888",
   },
   tipsContainer: {
     backgroundColor: "#F0FFF0",

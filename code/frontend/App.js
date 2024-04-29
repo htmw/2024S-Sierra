@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AuthStackNavigator from "./navigators/AuthStackNavigator";
 import MainTabNavigator from "./navigators/MainTabNavigator";
+import ProfileStackNavigator from "./navigators/ProfileStackNavigator";
 
 const RootStack = createStackNavigator();
 
@@ -12,6 +13,10 @@ export default function App() {
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
         <RootStack.Screen name="AuthStack" component={AuthStackNavigator} />
         <RootStack.Screen name="MainTab" component={MainTabNavigator} />
+        <RootStack.Screen
+          name="ProfileStack"
+          component={ProfileStackNavigator}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );
