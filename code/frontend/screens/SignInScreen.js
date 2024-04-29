@@ -21,7 +21,6 @@ import firebase from "../service/firebaseConfig";
 export default function SignInScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const [fontsLoaded] = useFonts({
     Montserrat_500Medium,
     Montserrat_600SemiBold,
@@ -58,7 +57,7 @@ export default function SignInScreen({ navigation }) {
               onChangeText={setUsername}
               autoCapitalize="none"
               keyboardType="email-address"
-              placeholderTextColor="#FFFFFF80"
+              placeholderTextColor={username ? "#000000" : "#FFFFFF80"}
             />
             <TextInput
               style={styles.input}
@@ -66,7 +65,7 @@ export default function SignInScreen({ navigation }) {
               secureTextEntry
               value={password}
               onChangeText={setPassword}
-              placeholderTextColor="#FFFFFF80"
+              placeholderTextColor={password ? "#000000" : "#FFFFFF80"}
             />
           </View>
           <TouchableOpacity style={styles.button} onPress={handleSignIn}>

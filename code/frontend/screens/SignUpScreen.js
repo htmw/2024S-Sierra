@@ -60,7 +60,7 @@ export default function SignUpScreen({ navigation }) {
               placeholder="Name"
               value={name}
               onChangeText={setName}
-              placeholderTextColor="#FFFFFF80"
+              placeholderTextColor={name ? "#000000" : "#FFFFFF80"} // Change placeholder color based on the value of 'name'
             />
             <TextInput
               style={styles.input}
@@ -69,7 +69,7 @@ export default function SignUpScreen({ navigation }) {
               onChangeText={setUsername}
               autoCapitalize="none"
               keyboardType="email-address"
-              placeholderTextColor="#FFFFFF80"
+              placeholderTextColor={username ? "#000000" : "#FFFFFF80"}
             />
             <TextInput
               style={styles.input}
@@ -77,7 +77,7 @@ export default function SignUpScreen({ navigation }) {
               value={age}
               onChangeText={setAge}
               keyboardType="numeric"
-              placeholderTextColor="#FFFFFF80"
+              placeholderTextColor={age ? "#000000" : "#FFFFFF80"}
             />
             <TextInput
               style={styles.input}
@@ -85,7 +85,7 @@ export default function SignUpScreen({ navigation }) {
               secureTextEntry
               value={password}
               onChangeText={setPassword}
-              placeholderTextColor="#FFFFFF80"
+              placeholderTextColor={password ? "#000000" : "#FFFFFF80"}
             />
             <TextInput
               style={styles.input}
@@ -93,7 +93,7 @@ export default function SignUpScreen({ navigation }) {
               secureTextEntry
               value={confirmPassword}
               onChangeText={setConfirmPassword}
-              placeholderTextColor="#FFFFFF80"
+              placeholderTextColor={confirmPassword ? "#000000" : "#FFFFFF80"}
             />
           </View>
           <TouchableOpacity style={styles.button} onPress={handleSignUp}>
