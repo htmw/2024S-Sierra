@@ -19,6 +19,7 @@ import {
 import { auth, db } from "../service/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import imagesData from "../assets/images.json";
 
 export default function SignUpScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -42,12 +43,22 @@ export default function SignUpScreen({ navigation }) {
       );
       const user = userCredential.user;
 
-      // Store user details in Firestore
+      // Randomly select an image name from the JSON file
+      const randomImageIndex = Math.floor(
+        Math.random() * imagesData.images.length,
+      );
+      const selectedImageName = imagesData.images[randomImageIndex];
+
+      // Construct the full image path
+      const selectedImagePath = `assets/${selectedImageName}`;
+
+      // Store user details and the selected image path in Firestore
       await setDoc(doc(db, "users", user.uid), {
         name,
         username,
         age,
         email: fullUsername,
+        profileImage: selectedImageName,
       });
 
       console.log("User account created & signed in!");
