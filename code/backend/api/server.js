@@ -1,80 +1,32 @@
 const express = require("express");
-const mysql = require("mysql");
-const multer = require("multer");
-const { spawn } = require("child_process");
-const dotenv = require("dotenv");
-
-dotenv.config();
+const axios = require("axios");
 
 const app = express();
-const upload = multer({ dest: "uploads/" });
+const PORT = 3000;
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+const API_URL = "https://www.fruityvice.com/api/fruit/all";
 
-connection.connect((err) => {
-  if (err) {
-    console.error("Error connecting to the database:", err);
-    return;
+app.get("/api/fruit/:fruitName", async (req, res) => {
+  const { fruitName } = req.params;
+
+  try {
+    const response = await axios.get(API_URL);
+    const fruits = response.data;
+    const fruitData = fruits.find(
+      (fruit) => fruit.name.toLowerCase() === fruitName.toLowerCase(),
+    );
+
+    if (fruitData) {
+      res.status(200).json(fruitData);
+    } else {
+      res.status(404).json({ message: "Fruit not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching fruits:", error);
+    res.status(500).json({ message: "Failed to retrieve fruit data" });
   }
-  console.log("Connected to the database");
 });
 
-app.post("/predict", upload.single("image"), (req, res) => {
-  if (!req.file) {
-    res.status(400).json({ error: "No image file uploaded" });
-    return;
-  }
-
-  const imagePath = req.file.path;
-
-  const pythonProcess = spawn("python", ["predict_fruit.py", imagePath]);
-
-  pythonProcess.stdout.on("data", (data) => {
-    const fruit = data.toString().trim();
-
-    const query = "SELECT * FROM fruit_nutrients WHERE fruit = ?";
-    connection.query(query, [fruit], (err, results) => {
-      if (err) {
-        console.error("Error executing SQL query:", err);
-        res.status(500).json({ error: "Internal server error" });
-        return;
-      }
-
-      if (results.length === 0) {
-        res.status(404).json({ error: "Fruit not found in the database" });
-        return;
-      }
-
-      const nutrients = results[0];
-      res.json({
-        fruit,
-        nutrients: {
-          calories: nutrients.calories,
-          carbohydrates: nutrients.carbohydrates,
-          protein: nutrients.protein,
-          fat: nutrients.fat,
-          fiber: nutrients.fiber,
-          vitaminC: nutrients.vitamin_c,
-          calcium: nutrients.calcium,
-          iron: nutrients.iron,
-        },
-      });
-    });
-  });
-
-  pythonProcess.stderr.on("data", (data) => {
-    console.error("Error from Python script:", data.toString());
-    res.status(500).json({ error: "Internal server error" });
-  });
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-

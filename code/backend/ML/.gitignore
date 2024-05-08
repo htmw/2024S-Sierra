@@ -1,0 +1,17 @@
+# Ignore the virtual environment folder
+ml_api/
+
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore log files
+*.log
+
+# Ignore any other files or folders specific to your project
