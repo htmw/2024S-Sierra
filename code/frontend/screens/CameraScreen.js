@@ -43,35 +43,32 @@ const CameraScreen = () => {
     navigation.navigate("ImageDetails", { imageUri: capturedImage });
   };
 
-  if (hasPermission === null) {
-    return <View />;
-  }
-
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.cameraContainer}>
-        <Camera style={styles.camera} ref={(ref) => setCameraRef(ref)}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Camera</Text>
+      {hasPermission === null ? (
+        <View />
+      ) : hasPermission === false ? (
+        <Text>No access to camera</Text>
+      ) : (
+        <View style={styles.cameraContainer}>
+          <Camera style={styles.camera} ref={(ref) => setCameraRef(ref)}>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Camera</Text>
+            </View>
+          </Camera>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+              <View style={styles.captureButtonInner} />
+            </TouchableOpacity>
           </View>
-        </Camera>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-          <View style={styles.captureButtonInner} />
-        </TouchableOpacity>
-      </View>
+        </View>
+      )}
+
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+        onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalView}>
           <Image source={{ uri: capturedImage }} style={styles.capturedImage} />
@@ -84,7 +81,7 @@ const CameraScreen = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.modalButton, styles.closeButton]}
-              onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => setModalVisible(false)}
             >
               <Ionicons name="close" size={32} color="#fff" />
             </TouchableOpacity>
