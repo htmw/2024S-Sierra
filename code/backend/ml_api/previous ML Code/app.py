@@ -20,18 +20,30 @@ async def exception_handler(request, exc):
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-   try:
-       contents = await file.read()
-       image = Image.open(io.BytesIO(contents)).convert('RGB')
-       image = image.resize((100, 100))
-       image_array = np.array(image) / 255.0
-       image_array = np.expand_dims(image_array, axis=0)
+    try:
+        contents = await file.read()
+        
+        # Basic input validation
+        if not file.content_type.startswith('image/'):
+            return JSONResponse(status_code=400, content={"message": "Uploaded file is not an image."})
+        
+        # Resize image
+        image = Image.open(io.BytesIO(contents)).convert('RGB')
+        image = image.resize((100, 100))
+        
+        # Convert image to array
+        image_array = np.array(image) / 255.0
+        image_array = np.expand_dims(image_array, axis=0)
 
-       predictions = model.predict(image_array)
-       predicted_class_index = np.argmax(predictions[0])
-       predicted_class_label = class_labels[predicted_class_index]
+        # Make predictions
+        predictions = model.predict(image_array)
+        predicted_class_index = np.argmax(predictions[0])
+        predicted_class_label = class_labels[predicted_class_index]
+        
+        # Get confidence score
+        confidence_score = predictions[0][predicted_class_index]
 
-       return {"fruit": predicted_class_label}
-   except Exception as e:
-       raise e
-
+        return {"fruit": predicted_class_label, "confidence": float(confidence_score)}
+    
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"message": f"An error occurred: {e}"})
