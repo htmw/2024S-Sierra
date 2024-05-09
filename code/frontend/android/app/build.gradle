@@ -83,7 +83,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.client"
+    namespace "com.saikirito0909.client"
     defaultConfig {
         applicationId 'com.saikirito0909.client'
         minSdkVersion rootProject.ext.minSdkVersion
