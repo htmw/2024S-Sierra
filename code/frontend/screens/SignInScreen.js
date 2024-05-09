@@ -162,7 +162,7 @@
 
 
 
-// Importing necessary React and React Native components
+
 import React, { useState } from "react";
 import {
   View,
@@ -186,7 +186,7 @@ import { auth } from "../service/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignInScreen({ navigation }) {
-  // Renamed variables
+
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
 
@@ -268,7 +268,7 @@ export default function SignInScreen({ navigation }) {
   );
 }
 
-// StyleSheet for the component
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
