@@ -13,14 +13,26 @@ function MainTabNavigator() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
+          // Destructure props
+          const { name } = route;
           let iconName;
-          if (route.name === "CameraStack") {
-            iconName = focused ? "camera" : "camera-outline";
-          } else if (route.name === "FavoritesStack") {
-            iconName = focused ? "heart" : "heart-outline";
-          } else if (route.name === "Profile") {
-            iconName = focused ? "person" : "person-outline";
+
+          // Switch statement for better readability
+          switch (name) {
+            case "CameraStack":
+              iconName = focused ? "camera" : "camera-outline";
+              break;
+            case "FavoritesStack":
+              iconName = focused ? "heart" : "heart-outline";
+              break;
+            case "Profile":
+              iconName = focused ? "person" : "person-outline";
+              break;
+            default:
+              iconName = ""; // Handle default case
           }
+
+          // Return Ionicons component
           return <Ionicons name={iconName} size={size + 5} color={color} />;
         },
         tabBarActiveTintColor: "#7F5DF0",
@@ -30,6 +42,7 @@ function MainTabNavigator() {
         },
       })}
     >
+      {/* Consistent naming convention */}
       <Tab.Screen name="FavoritesStack" component={FavoritesStackNavigator} />
       <Tab.Screen name="CameraStack" component={CameraStackNavigator} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
