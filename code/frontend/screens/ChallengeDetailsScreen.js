@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
-
 export default function ChallengeDetailsScreen({ route }) {
   const { challenge } = route.params;
   const [completedFruits, setCompletedFruits] = useState([]);
@@ -23,63 +22,62 @@ export default function ChallengeDetailsScreen({ route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{challenge.title}</Text>
-      </View>
-      <ScrollView style={styles.content}>
-        <View style={styles.descriptionContainer}>
-          <Icon name="info-circle" size={24} color="#1E90FF" />
-          <Text style={styles.description}>{challenge.description}</Text>
+      <>
+        <View style={styles.header}>
+          <Text style={styles.title}>{challenge.title}</Text>
         </View>
-        <View style={styles.fruitsContainer}>
-          <Text style={styles.fruitsTitle}>
-            <Icon name="apple-alt" size={20} color="#FF4500" /> Recommended
-            Fruits
-          </Text>
-          {challenge.fruits.map((fruit, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.fruitItem}
-              onPress={() => toggleFruitCompletion(fruit)}
-            >
-              <Icon
-                name={
-                  completedFruits.includes(fruit) ? "check-square" : "square"
-                }
-                size={20}
-                color="#32CD32"
-              />
-              <Text
+        <ScrollView style={styles.content}>
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Icon name="info-circle" size={24} color="#1E90FF" />
+              <Text style={styles.sectionTitle}>Description</Text>
+            </View>
+            <Text style={styles.description}>{challenge.description}</Text>
+          </View>
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Icon name="apple-alt" size={20} color="#FF4500" />
+              <Text style={styles.sectionTitle}>Recommended Fruits</Text>
+            </View>
+            {challenge.fruits.map((fruit, index) => (
+              <TouchableOpacity
+                key={index}
                 style={[
-                  styles.fruitText,
-                  completedFruits.includes(fruit) && styles.completedFruitText,
+                  styles.fruitItem,
+                  completedFruits.includes(fruit) && styles.completedFruitItem,
                 ]}
+                onPress={() => toggleFruitCompletion(fruit)}
               >
-                {fruit}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <View style={styles.tipsContainer}>
-          <Text style={styles.tipsTitle}>
-            <Icon name="lightbulb" size={20} color="#FFD700" /> Tips
-          </Text>
-          <Text style={styles.tipText}>
-            - Make sure to wash your fruits thoroughly before consuming them.
-          </Text>
-          <Text style={styles.tipText}>
-            - Try to buy organic fruits whenever possible for added health
-            benefits.
-          </Text>
-          <Text style={styles.tipText}>
-            - Experiment with different fruit combinations to keep things
-            interesting.
-          </Text>
-        </View>
-      </ScrollView>
+                <Icon
+                  name={completedFruits.includes(fruit) ? "check-square" : "square"}
+                  size={20}
+                  color={completedFruits.includes(fruit) ? "#32CD32" : "#333"}
+                />
+                <Text style={styles.fruitText}>{fruit}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Icon name="lightbulb" size={20} color="#FFD700" />
+              <Text style={styles.sectionTitle}>Tips</Text>
+            </View>
+            <Text style={styles.tipText}>
+              - Make sure to wash your fruits thoroughly before consuming them.
+            </Text>
+            <Text style={styles.tipText}>
+              - Try to buy organic fruits whenever possible for added health benefits.
+            </Text>
+            <Text style={styles.tipText}>
+              - Experiment with different fruit combinations to keep things interesting.
+            </Text>
+          </View>
+        </ScrollView>
+      </>
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 const ImageDetailsScreen = ({ route }) => {
   const { imageUri } = route.params;
   const [nutrientsValues, setNutrientsValues] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -37,10 +38,17 @@ const ImageDetailsScreen = ({ route }) => {
         },
       });
 
+      if (!response.ok) {
+        throw new Error("Failed to predict nutrients");
+      }
+
       const data = await response.json();
       setNutrientsValues(data);
     } catch (error) {
       console.error("Error predicting nutrients:", error);
+      // Handle error gracefully
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,7 +61,9 @@ const ImageDetailsScreen = ({ route }) => {
         <Ionicons name="close-circle" size={32} color="#fff" />
       </TouchableOpacity>
       <Image source={{ uri: imageUri }} style={styles.image} />
-      {nutrientsValues ? (
+      {loading ? (
+        <Text style={styles.scanningText}>Scanning...</Text>
+      ) : (
         <ScrollView contentContainerStyle={styles.detailsContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerTitle}>{nutrientsValues.fruit}</Text>
@@ -71,8 +81,6 @@ const ImageDetailsScreen = ({ route }) => {
             Fat: {nutrientsValues.nutrients.fat}g
           </Text>
         </ScrollView>
-      ) : (
-        <Text style={styles.scanningText}>Scanning...</Text>
       )}
     </SafeAreaView>
   );

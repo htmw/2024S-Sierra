@@ -9,14 +9,18 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+// Fetching and displaying favorite food items in a FlatList
 export default function FavoritesScreen() {
+  // State to hold the list of favorite items
   const [favoritesData, setFavoritesData] = useState([]);
   const navigation = useNavigation();
 
+  // Fetch data when component mounts
   useEffect(() => {
     fetchFavoritesData();
   }, []);
 
+  // Fetching favorites data from the API
   const fetchFavoritesData = async () => {
     try {
       const response = await fetch("http://localhost:3000/predict");
@@ -27,6 +31,7 @@ export default function FavoritesScreen() {
     }
   };
 
+  // Renders each favorite item in the list
   const renderFavoriteItem = ({ item }) => (
     <TouchableOpacity
       style={styles.itemContainer}
@@ -35,25 +40,22 @@ export default function FavoritesScreen() {
       <View style={styles.itemDetails}>
         <Text style={styles.itemName}>{item.name}</Text>
         <View style={styles.itemNutrition}>
-          <View style={styles.nutritionItem}>
-            <Text style={styles.itemNutritionLabel}>Calories:</Text>
-            <Text style={styles.itemNutritionText}>{item.calories}</Text>
-          </View>
-          <View style={styles.nutritionItem}>
-            <Text style={styles.itemNutritionLabel}>Protein:</Text>
-            <Text style={styles.itemNutritionText}>{item.protein}g</Text>
-          </View>
-          <View style={styles.nutritionItem}>
-            <Text style={styles.itemNutritionLabel}>Carbs:</Text>
-            <Text style={styles.itemNutritionText}>{item.carbs}g</Text>
-          </View>
-          <View style={styles.nutritionItem}>
-            <Text style={styles.itemNutritionLabel}>Fat:</Text>
-            <Text style={styles.itemNutritionText}>{item.fat}g</Text>
-          </View>
+          {/* Nutritional information */}
+          {renderNutritionItem("Calories:", item.calories)}
+          {renderNutritionItem("Protein:", `${item.protein}g`)}
+          {renderNutritionItem("Carbs:", `${item.carbs}g`)}
+          {renderNutritionItem("Fat:", `${item.fat}g`)}
         </View>
       </View>
     </TouchableOpacity>
+  );
+
+  // Function to render a nutrition item with a consistent style
+  const renderNutritionItem = (label, value) => (
+    <View style={styles.nutritionItem}>
+      <Text style={styles.itemNutritionLabel}>{label}</Text>
+      <Text style={styles.itemNutritionText}>{value}</Text>
+    </View>
   );
 
   return (
@@ -70,6 +72,7 @@ export default function FavoritesScreen() {
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
